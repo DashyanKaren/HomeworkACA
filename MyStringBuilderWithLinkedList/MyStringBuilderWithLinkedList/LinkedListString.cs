@@ -1,4 +1,7 @@
-﻿namespace MyStringBuilderWithLinkedList
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace MyStringBuilderWithLinkedList
 {
     public class LinkedListString
     {
@@ -6,53 +9,100 @@
 
         public Item Tail { get; private set; }
 
-        public int Count { get; private set; }
+        public int Length { get; private set; }
 
         public LinkedListString(string data)
         {
-            var item = new Item(data);
+            var item = new Item(data.ToCharArray());
             SetHeadAndTail(item);
-        }
-
-        public LinkedListString()
-        {
-            Head = null;
-            Tail = null;
-            Count = 0;
         }
 
         public override string ToString()
         {
-            var result = string.Empty;
-            if (Head != null)
+            char[] result = new char[Length];
+            var tempHead = Head;
+            int index = 0;
+            while (tempHead != null)
             {
-                var tempHead= Head;
-                while (tempHead != null)
+                for (int i = 0; i < tempHead.Data.Length; i++)
                 {
-                    result += tempHead;
-                    tempHead = tempHead.Next;
+                    result[index] = tempHead.Data[i];
+                    index++;
                 }
+                tempHead = tempHead.Next;
             }
-            return result;
+
+            return new string(result);
         }
 
         private void SetHeadAndTail(Item item)
         {
             Head = item;
             Tail = item;
-            Count = 1;
+            Length = Head.Data.Length;
         }
 
-        public void Add(string data)
+        public LinkedListString Append(string data)
         {
-            var item = new Item(data);
+            if (data==null)
+            {
+                return this;
+            }
+            var item = new Item(data.ToCharArray());
             if (Tail != null)
             {
                 Tail.Next = item;
                 Tail = item;
-                Count++;
+                Length += data.Length;
+
             }
             else { SetHeadAndTail(item); }
+            return this;
+        }
+        public LinkedListString InsertAt(int index, string data)
+        {
+            if (index<0 || data==null || index>Length)
+            {
+                return this;
+            }
+          
+            int count = 0;
+            int subIndex = index;
+            var tempHead = Head;
+            
+            while (count <= index)
+            {
+                count += tempHead.Data.Length;
+                subIndex -= tempHead.Data.Length;
+
+                if(subIndex < tempHead.Length)
+                {
+                    break;
+                }
+
+                tempHead = tempHead.Next;
+
+            };
+
+            var len = tempHead.Length + data.Length;
+            char[] chars = new char[len];
+
+            for (int i = subIndex, j = 0; i < subIndex + data.Length && j < data.Length; i++)
+            {
+                chars[i] = data[j];
+            }
+
+            for (int i = 0, j = subIndex + data.Length, k = subIndex + data.Length; i < Math.Abs(subIndex) && j < len && k < len; i++, j++, k++)
+            {
+                chars[i] = tempHead.Data[i];
+                chars[j] = tempHead.Data[k];
+            }
+
+            tempHead.Data = chars;
+            return this;
+
+   
+
         }
     }
 }

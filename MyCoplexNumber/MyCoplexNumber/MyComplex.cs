@@ -8,33 +8,46 @@ namespace MyCoplexNumber
 {
    public class MyComplex
     {
-        public double real { get; set; }
-        public double imaginary { get; set; }
+        public double Real { get; set; }
+        public double Imaginary { get; set; }
 
-        public MyComplex(double real, double imaginary)
+        public MyComplex(double real, double imaginary = 0)
         {
-            this.real = real;
-            this.imaginary = imaginary;
+            this.Real = real;
+            this.Imaginary = imaginary;
         }
-        public double Abs() => Math.Sqrt((real*real) + (imaginary*imaginary));
+        public MyComplex()
+        {
+                
+        }
+        public double Abs() => Math.Sqrt((Real*Real) + (Imaginary*Imaginary));
 
         public static MyComplex operator +(MyComplex a, MyComplex b)
         {
 
-            return new MyComplex((a.real + b.real), (a.imaginary + b.imaginary));
+            return new MyComplex((a.Real + b.Real), (a.Imaginary + b.Imaginary));
 
         }
 
         public static MyComplex operator -(MyComplex a, MyComplex b)
         {
 
-            return new MyComplex((a.real - b.real), (a.imaginary - b.imaginary));
+            return new MyComplex((a.Real - b.Real), (a.Imaginary - b.Imaginary));
 
         }
 
+        public static explicit operator MyComplex(double d)
+        {
+          return new MyComplex(d, 0);
+        }
+        public static implicit operator double(MyComplex d)
+        {
+           return  d.Real  ;
+        }
         public override string ToString()
         {
-            return $"({real.ToString()},  {imaginary.ToString()})";
+            return $"({Real.ToString()},  {Imaginary.ToString()})";
         }
+
     }
 }

@@ -6,14 +6,18 @@ namespace MyStringBuilderWithLinkedList
     {
         static void Main(string[] args)
         {
-            var list = new LinkedListString();
-            list.Add("a");
-            list.Add("b");
-            list.Add("c");
+            var list = new LinkedListString("abc");
+            list.Append("aaaa");
+            list.Append("bbbb");
+            list.Append("cccc");
             Console.WriteLine(list.ToString()); 
 
-            list.Add("d");
+            list.Append("dddd");
             Console.WriteLine(list.ToString());
+            list.InsertAt(5, "TTT");
+            Console.WriteLine(list.ToString());
+
+
 
         }
     }
